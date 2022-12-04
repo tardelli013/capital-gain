@@ -14,7 +14,6 @@ func NewOperationUseCase() ports.OperationUseCase {
 }
 
 func (o OperationUseCase) CalcCapitalGain(operations []*domain.Oper) ([]domain.FeeResponse, error) {
-
 	var weightedAveragePrice, lastUnitCost, lastDamage, taxPaid decimal.Decimal
 	var currentTotalActions int64
 	listFees := make([]domain.FeeResponse, len(operations))
@@ -39,8 +38,7 @@ func (o OperationUseCase) CalcCapitalGain(operations []*domain.Oper) ([]domain.F
 func calcSell(operation domain.Oper, currentTotalActions int64,
 	weightedAveragePrice, lastUnitCost, lastDamage decimal.Decimal) (decimal.Decimal, decimal.Decimal) {
 
-	loss, taxToPay := calculateTaxOperation(operation, currentTotalActions, weightedAveragePrice,
-		lastUnitCost, lastDamage)
+	loss, taxToPay := calculateTaxOperation(operation, currentTotalActions, weightedAveragePrice, lastUnitCost, lastDamage)
 
 	return taxToPay, loss
 }
@@ -54,15 +52,12 @@ func calcBuy(operation domain.Oper, currentTotalActions int64, currentWeightedAv
 
 func calculateWeightedAverage(operation domain.Oper, currentTotalActions int64, currentWeightedAverage decimal.Decimal) decimal.Decimal {
 	newWeightedAverage := ((currentTotalActions * currentWeightedAverage.IntPart()) +
-		(operation.Quantity * operation.UnitCost.IntPart())) /
-		(currentTotalActions + operation.Quantity)
+		(operation.Quantity * operation.UnitCost.IntPart())) / (currentTotalActions + operation.Quantity)
 
 	return decimal.NewFromInt(newWeightedAverage)
 }
 
-func calculateTaxOperation(operation domain.Oper, currentTotalActions int64, weightedAveragePrice,
-	lastUnitCost, lastDamage decimal.Decimal) (decimal.Decimal, decimal.Decimal) {
-
+func calculateTaxOperation(operation domain.Oper, currentTotalActions int64, weightedAveragePrice, lastUnitCost, lastDamage decimal.Decimal) (decimal.Decimal, decimal.Decimal) {
 	const maxTaxFreeProfit = 20000.00
 	var profits, loss, taxToPay decimal.Decimal
 	var taxPercentPaid int64 = 20
