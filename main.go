@@ -3,8 +3,7 @@ package main
 import (
 	"desafio-nu/adapter"
 	"desafio-nu/core/usecases"
-	"encoding/json"
-	"fmt"
+	"desafio-nu/helpers"
 )
 
 func main() {
@@ -16,20 +15,10 @@ func main() {
 		panic(err)
 	}
 
-	feeResults, err := useCase.CalcOperations(operationsFromScan)
+	feeResults, err := useCase.CalcCapitalGain(operationsFromScan)
 	if err != nil {
 		panic(err)
 	}
 
-	PrettyPrint(&feeResults)
-}
-
-func PrettyPrint(data interface{}) {
-	var p []byte
-	p, err := json.Marshal(data)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	fmt.Printf("%s \n", p)
+	helpers.PrettyPrint(&feeResults)
 }

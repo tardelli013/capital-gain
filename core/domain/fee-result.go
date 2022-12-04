@@ -1,11 +1,13 @@
 package domain
 
+import "github.com/shopspring/decimal"
+
 type FeeResponse struct {
-	Tax float64 `json:"tax"`
+	Tax decimal.Decimal `json:"tax"`
 }
 
-func NewResponse(tax float64) *FeeResponse {
-	return &FeeResponse{
+func NewResponse(tax decimal.Decimal) FeeResponse {
+	return FeeResponse{
 		Tax: tax,
 	}
 }

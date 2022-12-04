@@ -1,5 +1,7 @@
 package domain
 
+import "github.com/shopspring/decimal"
+
 type OperationType string
 
 const (
@@ -8,15 +10,7 @@ const (
 )
 
 type Oper struct {
-	Operation OperationType `json:"operation"`
-	UnitCost  float64       `json:"unit-cost"`
-	Quantity  int           `json:"quantity"`
-}
-
-func NewOperation(operation OperationType, unitCost float64, quantity int) *Oper {
-	return &Oper{
-		Operation: operation,
-		UnitCost:  unitCost,
-		Quantity:  quantity,
-	}
+	Operation OperationType   `json:"operation"`
+	UnitCost  decimal.Decimal `json:"unit-cost"`
+	Quantity  int64           `json:"quantity"`
 }
