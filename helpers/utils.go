@@ -6,11 +6,13 @@ import (
 )
 
 func PrettyPrint(data interface{}) {
-	var p []byte
+	fmt.Printf(ToJsonString(data))
+}
+
+func ToJsonString(data interface{}) string {
 	p, err := json.Marshal(data)
 	if err != nil {
-		fmt.Println(err)
-		return
+		panic(err)
 	}
-	fmt.Printf("\n%s\n", p)
+	return string(p)
 }

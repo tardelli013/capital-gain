@@ -2,50 +2,53 @@ package calc
 
 import (
 	"desafio-nu/core/domain"
-	"github.com/shopspring/decimal"
 )
 
 type Sell struct {
 }
 
 type OperationSell interface {
-	CalcSell(operation domain.Oper, currentTotalStocks int64, averagePrice, lastUnitCost, lastDamage decimal.Decimal) (decimal.Decimal, decimal.Decimal)
+	CalcSell(operation domain.Oper, averagePrice float64, totalLoss float64) (float64, float64)
 }
 
 func NewOperationSell() OperationSell {
 	return &Sell{}
 }
 
-func (s Sell) CalcSell(operation domain.Oper, currentTotalStocks int64, averagePrice, lastUnitCost, lastDamage decimal.Decimal) (decimal.Decimal, decimal.Decimal) {
-	loss, taxToPay := calculateTaxOperation(operation, currentTotalStocks, averagePrice, lastUnitCost, lastDamage)
+func (s Sell) CalcSell(operation domain.Oper, averagePrice float64, totalLoss float64) (float64, float64) {
+	loss, taxToPay := calculateTaxInOperation(operation, averagePrice, totalLoss)
 
 	return taxToPay, loss
 }
 
-func calculateTaxOperation(operation domain.Oper, currentTotalStocks int64, averagePrice, lastUnitCost, lastDamage decimal.Decimal) (decimal.Decimal, decimal.Decimal) {
+func calculateTaxInOperation(operation domain.Oper, averagePrice float64, totalLoss float64) (float64, float64) {
 	const maxTaxFreeProfit = 20000.00
-	var profits, loss, taxToPay decimal.Decimal
-	var taxPercentPaid int64 = 20
+	var loss, taxToPay float64
+	var taxPercentPaid float64 = 20
 
-	stocksDecreased := currentTotalStocks - operation.Quantity
-	if stocksDecreased == 0 {
-		stocksDecreased = currentTotalStocks
+	isTaxFreeOperation := float64(operation.Quantity)*operation.UnitCost <= maxTaxFreeProfit
+
+	if operation.UnitCost > averagePrice {
+		valorLucroNaOperacao := (operation.UnitCost - averagePrice) * float64(operation.Quantity)
+
+		if valorLucroNaOperacao > totalLoss {
+			lucroMenosPreju := valorLucroNaOperacao - totalLoss
+			taxToPay = (lucroMenosPreju * taxPercentPaid) / 100
+			loss = 0
+		} else {
+			loss = totalLoss - valorLucroNaOperacao
+		}
+
+	} else if operation.UnitCost == averagePrice {
+		taxToPay = 0
+		loss = 0
+	} else if operation.UnitCost < averagePrice {
+		taxToPay = 0
+		loss = (averagePrice - operation.UnitCost) * float64(operation.Quantity)
 	}
 
-	if transactionWithProfits := decimal.NewFromInt(operation.UnitCost.IntPart()).GreaterThan(lastUnitCost); transactionWithProfits == true {
-		profits = decimal.NewFromInt(stocksDecreased*(operation.UnitCost.IntPart()-lastUnitCost.IntPart()) - lastDamage.IntPart())
-		loss = decimal.NewFromInt(0)
-		taxToPay = decimal.NewFromInt(profits.IntPart() * taxPercentPaid).Div(decimal.NewFromInt(100))
-	} else if decimal.NewFromInt(operation.UnitCost.IntPart()).Equals(averagePrice) {
-		loss = decimal.NewFromInt(0)
-		profits = decimal.NewFromInt(0)
-	} else {
-		loss = decimal.NewFromInt(stocksDecreased * operation.UnitCost.IntPart())
-		profits = decimal.NewFromInt(0)
-	}
-
-	if isTaxFreeOperation := operation.Quantity * operation.UnitCost.IntPart(); isTaxFreeOperation <= maxTaxFreeProfit {
-		return loss, decimal.NewFromInt(0)
+	if isTaxFreeOperation {
+		return loss, 0
 	}
 
 	return loss, taxToPay
