@@ -3,7 +3,7 @@
 
 A aplicação foi desenvolvida utilizando apenas Golang 1.19 e seus recursos, nenhuma biblioteca externa foi adicionada para facilitar o build e a execução.
 
-A modelagem da aplicação foi baseada no modelo hexagonal (ports and adapters) e as regras de negócio estão centralizadas no pacote /core/usecases
+A modelagem da aplicação foi baseada no modelo hexagonal (_ports and adapters_) e as regras de negócio estão centralizadas no pacote `/core/usecases`
 
 Todos os casos te teste da documentação foram implementados no arquivo /core/usecases/capital-gain-test.go e o pacote usecases possui 100% de cobertura de testes.
 
@@ -58,4 +58,4 @@ Ao rodar a aplicação toda a iteração deverá ser feita via console, exemplo 
 ```go
 go test ./... -coverprofile coverage.out && go tool cover -func coverage.out && go tool cover -html=coverage.out -o coverage.html
 ```
-Os artefatos de cobertura serão gerados na raiz com os nomes coverage.html e coverage.out
+Os artefatos de cobertura serão gerados na raiz com os nomes `coverage.html` e `coverage.out`
