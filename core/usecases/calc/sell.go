@@ -22,21 +22,21 @@ func (s Sell) CalcSell(operation domain.Oper, averagePrice float64, totalLoss fl
 }
 
 func calculateTaxInOperation(operation domain.Oper, averagePrice float64, totalLoss float64) (float64, float64) {
-	const maxTaxFreeProfit = 20000.00
+	const maxProfitWithoutTaxes = 20000.00
 	var loss, taxToPay float64
-	var taxPercentPaid float64 = 20
+	var taxPercent float64 = 20
 
-	isTaxFreeOperation := float64(operation.Quantity)*operation.UnitCost <= maxTaxFreeProfit
+	isTaxFreeOperation := float64(operation.Quantity)*operation.UnitCost <= maxProfitWithoutTaxes
 
 	if operation.UnitCost > averagePrice {
-		valorLucroNaOperacao := (operation.UnitCost - averagePrice) * float64(operation.Quantity)
+		profit := (operation.UnitCost - averagePrice) * float64(operation.Quantity)
 
-		if valorLucroNaOperacao > totalLoss {
-			lucroMenosPreju := valorLucroNaOperacao - totalLoss
-			taxToPay = (lucroMenosPreju * taxPercentPaid) / 100
+		if profit > totalLoss {
+			netProfit := profit - totalLoss
+			taxToPay = (netProfit * taxPercent) / 100
 			loss = 0
 		} else {
-			loss = totalLoss - valorLucroNaOperacao
+			loss = totalLoss - profit
 		}
 
 	} else if operation.UnitCost == averagePrice {

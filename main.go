@@ -4,6 +4,7 @@ import (
 	"desafio-nu/adapter"
 	"desafio-nu/core/usecases"
 	"desafio-nu/helpers"
+	"fmt"
 )
 
 func main() {
@@ -20,5 +21,6 @@ func main() {
 		panic(err)
 	}
 
+	fmt.Println("\nResult: ")
 	helpers.PrettyPrint(&feeResults)
 }
