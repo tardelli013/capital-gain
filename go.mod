@@ -1,3 +1,3 @@
-module tardelli/desafio-nu
+module desafio-nu
 
 go 1.19
