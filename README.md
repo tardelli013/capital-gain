@@ -38,6 +38,7 @@ Para rodar a aplicação é necessário ter o ambiente de desenvolvimento com Go
 
 ### Para rodar a aplicação, dentro do diretório raiz rodar o comando:
 ```go
+go mod tidy
 go run main.go
 ```
 Ao rodar a aplicação toda a iteração deverá ser feita via console, exemplo abaixo:
