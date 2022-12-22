@@ -10,18 +10,15 @@ import (
 	"net/http"
 )
 
-func Router(useCase ports.OperationUseCase) {
+func SetupRouter(useCase ports.OperationUseCase) *gin.Engine {
 	g := gin.Default()
 	v1 := g.Group("/api/v1")
 
 	healthz(v1)
-	calc(useCase, v1)
+	calculateCapitalGain(useCase, v1)
 	swagger(g)
 
-	err := g.Run(":8080")
-	if err != nil {
-		panic(err)
-	}
+	return g
 }
 
 func swagger(g *gin.Engine) gin.IRoutes {
@@ -33,10 +30,10 @@ func swagger(g *gin.Engine) gin.IRoutes {
 // @Tags         healthZ
 // @Produce      json
 // @Success      200
-// @Router       /healthz [get]
+// @SetupRouter       /healthz [get]
 func healthz(g *gin.RouterGroup) gin.IRoutes {
 	return g.GET("/healthz", func(c *gin.Context) {
-		c.JSON(http.StatusOK, `running`)
+		c.String(http.StatusOK, "running")
 	})
 }
 
@@ -46,8 +43,8 @@ func healthz(g *gin.RouterGroup) gin.IRoutes {
 // @Produce      json
 // @Param        operations  body      []domain.Oper  true  "Operations JSON"
 // @Success      200   {array}  domain.FeeResponse
-// @Router       /calc [post]
-func calc(useCase ports.OperationUseCase, g *gin.RouterGroup) gin.IRoutes {
+// @SetupRouter       /calc [post]
+func calculateCapitalGain(useCase ports.OperationUseCase, g *gin.RouterGroup) gin.IRoutes {
 	return g.POST("/calc", func(c *gin.Context) {
 		var input []*domain.Oper
 

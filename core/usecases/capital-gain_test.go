@@ -2,8 +2,8 @@ package usecases
 
 import (
 	"desafio-nu/core/domain"
-	"desafio-nu/core/usecases/mocks"
 	"desafio-nu/helpers"
+	"desafio-nu/mocks"
 	"testing"
 )
 

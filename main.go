@@ -24,8 +24,11 @@ func main() {
 	useCase := usecases.NewOperationUseCase()
 	//runWithTerminalScan(useCase)
 
-	adapter.Router(useCase)
-
+	g := adapter.SetupRouter(useCase)
+	err := g.Run(":8080")
+	if err != nil {
+		panic(err)
+	}
 }
 
 func runWithTerminalScan(useCase ports.OperationUseCase) {
