@@ -1,0 +1,74 @@
+basePath: /api/v1
+definitions:
+  domain.FeeResponse:
+    properties:
+      tax:
+        type: number
+    type: object
+  domain.Oper:
+    properties:
+      operation:
+        $ref: '#/definitions/domain.OperationType'
+      quantity:
+        type: integer
+      unit-cost:
+        type: number
+    type: object
+  domain.OperationType:
+    enum:
+    - buy
+    - sell
+    type: string
+    x-enum-varnames:
+    - Buy
+    - Sell
+host: localhost:8080
+info:
+  contact:
+    email: tardelli.m@gmail.com
+    name: Tardelli Moura
+    url: https://google.com
+  description: Desafio de calculo de ganho de capital.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://google.com
+  title: Desafio Nu
+  version: "1.0"
+paths:
+  /calc:
+    post:
+      description: Calcule Capital Gain
+      parameters:
+      - description: Operations JSON
+        in: body
+        name: operations
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/domain.Oper'
+          type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.FeeResponse'
+            type: array
+      summary: Calcule Capital Gain
+      tags:
+      - Calc
+  /healthz:
+    get:
+      description: Responds running
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: healthz
+      tags:
+      - healthZ
+swagger: "2.0"
