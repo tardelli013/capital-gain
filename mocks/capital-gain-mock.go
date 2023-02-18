@@ -9,8 +9,8 @@ import (
 type OperationUseCaseMock struct {
 }
 
-func (o OperationUseCaseMock) CalcCapitalGain(_ []*domain.Oper) ([]domain.FeeResponse, error) {
-	return nil, errors.New("error")
+func (o OperationUseCaseMock) CalcCapitalGain(_ []*domain.Oper) (string, error) {
+	return "", errors.New("error")
 }
 
 func NewOperationUseCaseMock() ports.OperationUseCase {
