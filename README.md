@@ -1,5 +1,5 @@
 
-# Desafio Ganho de Capital - NUBANK
+# Desafio Ganho de Capital
 
 A aplicação foi desenvolvida utilizando apenas Golang 1.19 e seus recursos, nenhuma biblioteca externa foi adicionada para facilitar o build e a execução.
 
