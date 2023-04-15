@@ -43,8 +43,11 @@ Para rodar a aplicação é necessário ter o ambiente de desenvolvimento com Go
 go mod tidy
 go run main.go
 ```
-Ao rodar a aplicação toda a iteração deverá ser feita via console, exemplo abaixo:
+Ao rodar a aplicação toda a iteração poderá ser feita via console ou via API:
 
+Documentação da API com Swagger disponível na rota: http://localhost:8080/docs/index.html
+
+Abaixo um exemplo de iteração via console:
 ````go
 > go run main.go
 
@@ -54,7 +57,8 @@ Ao rodar a aplicação toda a iteração deverá ser feita via console, exemplo 
 > // abaixo receberemos o resultado da operação
 > Result:
 > [{"tax":0},{"tax":0},{"tax":0}]
-> Process finished with the exit code 0
+
+> Enter a operations json:
 ````
 
 ### Para rodar os testes e gerar um relatório de cobertura podemos usar o seguinte comando:
