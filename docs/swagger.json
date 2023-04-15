@@ -1,0 +1,111 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Desafio de calculo de ganho de capital.",
+        "title": "Desafio Nu",
+        "termsOfService": "https://google.com",
+        "contact": {
+            "name": "Tardelli Moura",
+            "url": "https://google.com",
+            "email": "tardelli.m@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/api/v1",
+    "paths": {
+        "/calc": {
+            "post": {
+                "description": "Calcule Capital Gain",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Calc"
+                ],
+                "summary": "Calcule Capital Gain",
+                "parameters": [
+                    {
+                        "description": "Operations JSON",
+                        "name": "operations",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/domain.Oper"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/domain.FeeResponse"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/healthz": {
+            "get": {
+                "description": "Responds running",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "healthZ"
+                ],
+                "summary": "healthz",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "domain.FeeResponse": {
+            "type": "object",
+            "properties": {
+                "tax": {
+                    "type": "number"
+                }
+            }
+        },
+        "domain.Oper": {
+            "type": "object",
+            "properties": {
+                "operation": {
+                    "$ref": "#/definitions/domain.OperationType"
+                },
+                "quantity": {
+                    "type": "integer"
+                },
+                "unit-cost": {
+                    "type": "number"
+                }
+            }
+        },
+        "domain.OperationType": {
+            "type": "string",
+            "enum": [
+                "buy",
+                "sell"
+            ],
+            "x-enum-varnames": [
+                "Buy",
+                "Sell"
+            ]
+        }
+    }
+}

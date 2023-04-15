@@ -13,12 +13,13 @@ func NewOperationUseCase() ports.OperationUseCase {
 	return &OperationUseCase{}
 }
 
-func (o OperationUseCase) CalcCapitalGain(operations []*domain.Oper) ([]domain.FeeResponse, error) {
+func (o OperationUseCase) CalcCapitalGain(operations []*domain.Oper) (interface{}, error) {
 	opBuy := calc.NewOperationBuy()
 	opSell := calc.NewOperationSell()
 	var taxPaid, totalLoss, averagePrice float64
 	var currentTotalStocks int64
-	listFees := make([]domain.FeeResponse, len(operations))
+	var calcSellError error
+	listFees := make([]interface{}, len(operations))
 
 	for i, op := range operations {
 		switch op.Operation {
@@ -26,11 +27,15 @@ func (o OperationUseCase) CalcCapitalGain(operations []*domain.Oper) ([]domain.F
 			taxPaid, averagePrice = opBuy.CalcBuy(*op, currentTotalStocks, averagePrice)
 			currentTotalStocks += op.Quantity
 		case domain.Sell:
-			taxPaid, totalLoss = opSell.CalcSell(*op, averagePrice, totalLoss)
+			taxPaid, totalLoss, calcSellError = opSell.CalcSell(*op, averagePrice, totalLoss, currentTotalStocks)
 			currentTotalStocks -= op.Quantity
 		}
 
-		listFees[i] = domain.NewResponse(taxPaid)
+		if calcSellError != nil {
+			listFees[i] = domain.BuildResponse(calcSellError)
+		} else {
+			listFees[i] = domain.BuildResponse(taxPaid)
+		}
 	}
 
 	return listFees, nil

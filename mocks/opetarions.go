@@ -43,6 +43,11 @@ func MockCase8() []*domain.Oper {
 	return jsonStringToOper(jsonStr)
 }
 
+func MockCase9() []*domain.Oper {
+	jsonStr := `[{"operation":"buy", "unit-cost":10, "quantity": 10000},{"operation":"sell", "unit-cost":20, "quantity": 11000}]`
+	return jsonStringToOper(jsonStr)
+}
+
 func jsonStringToOper(jsonStr string) []*domain.Oper {
 	var m []*domain.Oper
 	if err := json.Unmarshal([]byte(jsonStr), &m); err != nil {

@@ -2,23 +2,27 @@ package calc
 
 import (
 	"desafio-nu/core/domain"
+	"errors"
 )
 
 type Sell struct {
 }
 
 type OperationSell interface {
-	CalcSell(operation domain.Oper, averagePrice float64, totalLoss float64) (float64, float64)
+	CalcSell(operation domain.Oper, averagePrice float64, totalLoss float64, currentTotalStocks int64) (float64, float64, error)
 }
 
 func NewOperationSell() OperationSell {
 	return &Sell{}
 }
 
-func (s Sell) CalcSell(operation domain.Oper, averagePrice float64, totalLoss float64) (float64, float64) {
-	loss, taxToPay := calculateTaxInOperation(operation, averagePrice, totalLoss)
+func (s Sell) CalcSell(operation domain.Oper, averagePrice float64, totalLoss float64, currentTotalStocks int64) (float64, float64, error) {
+	if operation.Quantity > currentTotalStocks {
+		return 0, 0, errors.New("Can't sell more stocks than you have")
+	}
 
-	return taxToPay, loss
+	loss, taxToPay := calculateTaxInOperation(operation, averagePrice, totalLoss)
+	return taxToPay, loss, nil
 }
 
 func calculateTaxInOperation(operation domain.Oper, averagePrice float64, totalLoss float64) (float64, float64) {
