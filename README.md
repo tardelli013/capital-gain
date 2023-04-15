@@ -1,6 +1,8 @@
 
 # Desafio Ganho de Capital
 
+[![Go](https://github.com/tardelli013/capital-gain/actions/workflows/go.yml/badge.svg?branch=develop)](https://github.com/tardelli013/capital-gain/actions/workflows/go.yml)
+
 A aplicação foi desenvolvida utilizando apenas Golang 1.20 e seus recursos, nenhuma biblioteca externa foi adicionada para facilitar o build e a execução.
 
 A modelagem da aplicação foi baseada no modelo hexagonal (_ports and adapters_) e as regras de negócio estão centralizadas no pacote `/core/usecases`
