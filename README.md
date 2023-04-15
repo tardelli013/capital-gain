@@ -1,13 +1,13 @@
 
 # Desafio Ganho de Capital
 
-A aplicação foi desenvolvida utilizando apenas Golang 1.19 e seus recursos, nenhuma biblioteca externa foi adicionada para facilitar o build e a execução.
+A aplicação foi desenvolvida utilizando apenas Golang 1.20 e seus recursos, nenhuma biblioteca externa foi adicionada para facilitar o build e a execução.
 
 A modelagem da aplicação foi baseada no modelo hexagonal (_ports and adapters_) e as regras de negócio estão centralizadas no pacote `/core/usecases`
 
 Todos os casos te teste da documentação foram implementados no arquivo `/core/usecases/capital-gain-test.go` e o pacote usecases possui 100% de cobertura de testes.
 
-Para rodar a aplicação é necessário ter o ambiente de desenvolvimento com Golang 1.19, aqui o [link](https://go.dev/doc/install) para instalação.
+Para rodar a aplicação é necessário ter o ambiente de desenvolvimento com Golang > 1.19, aqui o [link](https://go.dev/doc/install) para instalação.
 
 ## Estrutura de diretórios e arquivos
 ```shell
