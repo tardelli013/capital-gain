@@ -18,7 +18,7 @@ func NewScan() Scan {
 func (s ScanAdapter) ScanOperations() ([]*domain.Oper, error) {
 	var operations []*domain.Oper
 
-	fmt.Println("\nEnter a operations json: ")
+	fmt.Println("\n[SCAN] Enter a operations json: ")
 	reader := bufio.NewReader(os.Stdin)
 	return decode(reader, operations)
 }

@@ -25,18 +25,20 @@ func main() {
 	useCase := usecases.NewOperationUseCase()
 
 	// up gin server in a new Goroutine
-	go func() {
-		g := adapter.SetupRouter(useCase)
-		err := g.Run(":8080")
-		if err != nil {
-			panic(err)
-		}
-	}()
+	go runWithGinHttp(useCase)
 
 	// this delay is for gin server up
 	time.Sleep(2 * time.Second)
 
 	runWithTerminalScan(useCase)
+}
+
+func runWithGinHttp(useCase ports.OperationUseCase) {
+	g := adapter.SetupRouter(useCase)
+	err := g.Run(":8080")
+	if err != nil {
+		panic(err)
+	}
 }
 
 func runWithTerminalScan(useCase ports.OperationUseCase) {
@@ -52,8 +54,9 @@ func runWithTerminalScan(useCase ports.OperationUseCase) {
 		panic(err)
 	}
 
-	fmt.Println("\nResult: ")
+	fmt.Println("\n[SCAN] Result: ")
 	helpers.PrettyPrint(&feeResults)
+	fmt.Print("\n")
 
 	runWithTerminalScan(useCase)
 }
