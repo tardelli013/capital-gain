@@ -9,7 +9,7 @@ import (
 type OperationUseCaseMock struct {
 }
 
-func (o OperationUseCaseMock) CalcCapitalGain(_ []*domain.Oper) (string, error) {
+func (o OperationUseCaseMock) CalcCapitalGain(_ []*domain.Oper) (interface{}, error) {
 	return "", errors.New("error")
 }
 

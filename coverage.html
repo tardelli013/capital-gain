@@ -164,7 +164,7 @@ func NewScan() Scan <span class="cov0" title="0">{
 func (s ScanAdapter) ScanOperations() ([]*domain.Oper, error) <span class="cov0" title="0">{
         var operations []*domain.Oper
 
-        fmt.Println("Enter a operations json: ")
+        fmt.Println("\n[SCAN] Enter a operations json: ")
         reader := bufio.NewReader(os.Stdin)
         return decode(reader, operations)
 }</span>
@@ -193,12 +193,13 @@ func NewOperationUseCase() ports.OperationUseCase <span class="cov8" title="1">{
         return &amp;OperationUseCase{}
 }</span>
 
-func (o OperationUseCase) CalcCapitalGain(operations []*domain.Oper) ([]domain.FeeResponse, error) <span class="cov8" title="1">{
+func (o OperationUseCase) CalcCapitalGain(operations []*domain.Oper) (interface{}, error) <span class="cov8" title="1">{
         opBuy := calc.NewOperationBuy()
         opSell := calc.NewOperationSell()
         var taxPaid, totalLoss, averagePrice float64
         var currentTotalStocks int64
-        listFees := make([]domain.FeeResponse, len(operations))
+        var calcSellError error
+        listFees := make([]interface{}, len(operations))
 
         for i, op := range operations </span><span class="cov8" title="1">{
                 switch op.Operation </span>{
@@ -206,11 +207,15 @@ func (o OperationUseCase) CalcCapitalGain(operations []*domain.Oper) ([]domain.F
                         taxPaid, averagePrice = opBuy.CalcBuy(*op, currentTotalStocks, averagePrice)
                         currentTotalStocks += op.Quantity</span>
                 case domain.Sell:<span class="cov8" title="1">
-                        taxPaid, totalLoss = opSell.CalcSell(*op, averagePrice, totalLoss)
+                        taxPaid, totalLoss, calcSellError = opSell.CalcSell(*op, averagePrice, totalLoss, currentTotalStocks)
                         currentTotalStocks -= op.Quantity</span>
                 }
 
-                <span class="cov8" title="1">listFees[i] = domain.NewResponse(taxPaid)</span>
+                <span class="cov8" title="1">if calcSellError != nil </span><span class="cov8" title="1">{
+                        listFees[i] = domain.BuildResponse(calcSellError)
+                }</span> else<span class="cov8" title="1"> {
+                        listFees[i] = domain.BuildResponse(taxPaid)
+                }</span>
         }
 
         <span class="cov8" title="1">return listFees, nil</span>
