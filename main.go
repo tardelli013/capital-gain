@@ -7,6 +7,7 @@ import (
 	_ "desafio-nu/docs"
 	"desafio-nu/helpers"
 	"fmt"
+	"time"
 )
 
 // @title           Desafio Nu
@@ -22,13 +23,20 @@ import (
 // @BasePath  /api/v1
 func main() {
 	useCase := usecases.NewOperationUseCase()
-	//runWithTerminalScan(useCase)
 
-	g := adapter.SetupRouter(useCase)
-	err := g.Run(":8080")
-	if err != nil {
-		panic(err)
-	}
+	// up gin server in a new Goroutine
+	go func() {
+		g := adapter.SetupRouter(useCase)
+		err := g.Run(":8080")
+		if err != nil {
+			panic(err)
+		}
+	}()
+
+	// this delay is for gin server up
+	time.Sleep(2 * time.Second)
+
+	runWithTerminalScan(useCase)
 }
 
 func runWithTerminalScan(useCase ports.OperationUseCase) {
@@ -46,4 +54,6 @@ func runWithTerminalScan(useCase ports.OperationUseCase) {
 
 	fmt.Println("\nResult: ")
 	helpers.PrettyPrint(&feeResults)
+
+	runWithTerminalScan(useCase)
 }
