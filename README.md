@@ -1,4 +1,5 @@
 
+![Coverage](https://img.shields.io/badge/Coverage-0-red)
 # Desafio Ganho de Capital
 
 [![Go](https://github.com/tardelli013/capital-gain/actions/workflows/go.yml/badge.svg?branch=develop)](https://github.com/tardelli013/capital-gain/actions/workflows/go.yml)
