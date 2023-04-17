@@ -1,8 +1,7 @@
 
-![Coverage](https://img.shields.io/badge/Coverage-0-red)
-# Desafio Ganho de Capital
-
+![Coverage](https://img.shields.io/badge/Coverage-80.4%25-brightgreen)
 [![Go](https://github.com/tardelli013/capital-gain/actions/workflows/go.yml/badge.svg?branch=develop)](https://github.com/tardelli013/capital-gain/actions/workflows/go.yml)
+# Desafio Ganho de Capital
 
 A aplicação foi desenvolvida utilizando apenas Golang 1.20 e seus recursos, nenhuma biblioteca externa foi adicionada para facilitar o build e a execução.
 
