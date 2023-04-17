@@ -19,19 +19,19 @@ jobs:
     - name: Vet
       run: go vet ./...
 
-    - name: Test
-      run: |
-          go test -v ./... -covermode=count -coverprofile=coverage.out
-          go tool cover -func=coverage.out -o=coverage.out
-
-    - name: Coverage Gate
+    - name: Test Coverage Gate
       env:
         TESTCOVERAGE_THRESHOLD: 80
       run: |
+            go test -v ./... -covermode=count -coverprofile=coverage.out
+
             echo "Quality Gate: checking test coverage is above threshold ..."
             echo "Threshold             : $TESTCOVERAGE_THRESHOLD %"
             totalCoverage=`go tool cover -func=coverage.out | grep total | grep -Eo '[0-9]+\.[0-9]+'`
             echo "Current test coverage : $totalCoverage %"
+            
+            go tool cover -func=coverage.out -o=coverage.out
+
             if (( $(echo "$totalCoverage $TESTCOVERAGE_THRESHOLD" | awk '{print ($1 > $2)}') )); then
                 echo "OK"
             else
