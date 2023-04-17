@@ -29,7 +29,6 @@ func main() {
 
 	// this delay is for gin server up
 	time.Sleep(2 * time.Second)
-
 	runWithTerminalScan(useCase)
 }
 
